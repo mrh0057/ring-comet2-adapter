@@ -1,0 +1,16 @@
+pom.xml
+*jar
+lib
+classes
+*dvi
+*log
+*toc
+*aux
+*war
+*.idea
+*iml
+*pdf
+*#
+*swp
+models/*
+*stackdump
