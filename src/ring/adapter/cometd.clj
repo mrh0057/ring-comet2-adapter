@@ -1,7 +1,6 @@
 (ns ring.adapter.cometd
   (:import [org.cometd.server CometdServlet AbstractService]
            [org.cometd.bayeux.server BayeuxServer]
-           ring.adapter.CometService
            [javax.servlet GenericServlet ServletException]))
 
 (def ^BayeuxServer *bayeux-server*)
@@ -32,7 +31,7 @@ channel-id
   The channel-id for the service.
   syntax: my/channel/*"
   [channel-id]
-  (CometService. *bayeux-server* channel-id))
+)
 
 (defn send-message
   "Publishes a message to a channel.
