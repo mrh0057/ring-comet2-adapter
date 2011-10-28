@@ -6,8 +6,12 @@
          (if (symbol? exp)
            `(~exp)
            `(ring.adapter.internal.services/create-service
-             ~(first exp)
-             ~(second exp)
+             ~(if (string? (first exp))
+                (first exp)
+                (throw (Exception. "Expecting a string value")))
+             ~(if (string? (second exp))
+                (second exp)
+                (throw (Exception. "Expecting a string value")))
              ~(nth exp 2)))) body))
 
 (defmacro defservices
