@@ -1,4 +1,4 @@
-(ns chatter.core
+(ns functional-tests.core
   (:use compojure.core
         compojure.route
         compojure.handler
@@ -16,7 +16,8 @@
 
 (defn test-service [val]
   (println val)
-  (publish "/some/channel" {:hello "world"}))
+  (publish "/publish/test" {:hello "world"})
+  (println "returning"))
 
 (defservices all-services
   ("hello" "/my/channel" test-service))

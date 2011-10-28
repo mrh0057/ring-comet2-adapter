@@ -1,0 +1,55 @@
+<html>
+<head>
+  <title>
+    Chatter Test Page
+  </title>
+  <link type="text/css" rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<script type="text/javascript" src="js/cometd-namespace.js"></script>
+<script type="text/javascript" src="js/Cometd.js"></script>
+<script type="text/javascript" src="js/CallbackPollingTransport.js"></script>
+<script type="text/javascript" src="js/cometd-header.js"></script>
+<script type="text/javascript" src="js/cometd-json.js"></script>
+<script type="text/javascript" src="js/LongPollingTransport.js"></script>
+<script type="text/javascript" src="js/RequestTransport.js"></script>
+<script type="text/javascript" src="js/Transport.js"></script>
+<script type="text/javascript" src="js/TransportRegistry.js"></script>
+<script type="text/javascript" src="js/Utils.js"></script>
+<script type="text/javascript" src="js/WebSocketTransport.js"></script>
+<script type="text/javascript" src="js/AckExtension.js"></script>
+<script type="text/javascript" src="js/ReloadExtension.js"></script>
+<script type="text/javascript" src="js/TimeStampExtension.js"></script>
+<script type="text/javascript" src="js/TimeSyncExtension.js"></script>
+<script type="text/javascript" src="js/jquery-1.6.2.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>
+<script type="text/javascript" src="js/jquery.cometd.js"></script>
+<script type="text/javascript" src="js/jquery.cometd-ack.js"></script>
+<script type="text/javascript" src="js/jquery.cometd-reload.js"></script>
+<script type="text/javascript" src="js/jquery.cometd-timestamp.js"></script>
+<script type="text/javascript" src="js/jquery.cometd-timesync.js"></script>
+<script type="text/javascript">
+  var connected = false;
+  $.cometd.init('http://localhost:9095/cometd');
+  $.cometd.addListener('/meta/connect', function(message) {
+    if (! connected) {
+      $("#connected-test").addClass("success");
+      connected = true;
+      $.cometd.publish('/my/channel', {hello: 'Word'});
+    }
+  });
+  $.cometd.subscribe('/publish/test', function(message) {
+    $('#response-test').addClass('success');
+  });
+</script>
+<div id="connected-test" class="test">
+  Connected
+</div>
+<div id="response-test" class="test">
+  defservices functions properly <br />
+  able to send messages <br />
+  able to receive messages
+</div>
+</body>
+</html>

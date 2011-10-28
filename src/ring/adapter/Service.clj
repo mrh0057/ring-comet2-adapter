@@ -34,9 +34,11 @@ body
             The id of the channel sending the message.
           :data
             A hashmap containing the data.  Currently doesn't convert the keys of the map to keywords and
-            is the same map returned by cometd.
+            is the same map returned by cometd. The map is readonly.
           :id
-            The id of the message."
+            The id of the message.
+          :message
+            The message obj for cometd.  The map contains data from the extension enable on the bayeux server."
   [name & body]
   `(defn ~name []
      ~@(emit-services body)))

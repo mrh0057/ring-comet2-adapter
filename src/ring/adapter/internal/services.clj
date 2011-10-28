@@ -10,13 +10,15 @@
 (defrecord ServiceRequest [from
                            channel-id
                            data
-                           id])
+                           id
+                           message])
 
 (defn make-service-request [from
                             channel-id
                             data
-                            id]
-  (ServiceRequest. from channel-id data id))
+                            id
+                            message]
+  (ServiceRequest. from channel-id data id message))
 
 (defn- same-session? [service from]
   (= (server-session (:session service)) from))
@@ -29,7 +31,8 @@
                    (message-handler (make-service-request from
                                                           (id channel)
                                                           (.getDataAsMap message)
-                                                          (.getId message))))))
+                                                          (.getId message)
+                                                          message)))))
       true)))
 
 (defrecord Service [session])

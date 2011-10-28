@@ -16,6 +16,4 @@ id
   ([channel-id data]
      (channel/publish channel-id nil data))
   ([channel-id data from]
-     (channel/publish channel-id from data))
-  ([channel-id data from id]
-     (channel/publish channel-id from data id)))
+     (channel/publish channel-id from data)))
