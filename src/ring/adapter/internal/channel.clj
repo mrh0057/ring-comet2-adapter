@@ -1,24 +1,28 @@
-(ns #^{:doc "These function are internal and are subject to change."}
+(ns
+    #^{:doc "These function are internal and are subject to change.
+The interface are kept internal to allow them to be change.  The functionality
+provided by the protocols are going to be wrap inside of function."}
   ring.adapter.internal.channel
-  (:use ring.adapter.cometd)
+  (:use ring.adapter.internal.bayeux)
   (:import [org.cometd.bayeux.server BayeuxServer ServerChannel ConfigurableServerChannel]
            [org.cometd.bayeux Channel]))
 
 (defn get-channel
   "Used to get a channel by its id.  If the channel doesn't exists
-it creates the channel.
+it creates the channel.  The reason the bayeux-server is referenced global is because there
+can only be one.
 
 id
   The id of the channel to get.
 return The channel with the specified id."
   [^String id]
-  (.createIfAbsent *bayeux-server* id)
+  (.createIfAbsent *bayeux-server* id (into-array org.cometd.bayeux.server.ConfigurableServerChannel$Initializer []))
   (.getChannel *bayeux-server* id))
 
 (defprotocol ServerChannelProtocol
   (remove-channel [this]
     "Removes a channel and all of its children")
-  (publish [this from data id]
+  (publish [this from data] [this from data id]
     "Publishes a message on the channel.
 
 from
@@ -42,8 +46,11 @@ session
   ServerChannelProtocol
   (remove-channel [this]
     (.removeChannel this))
-  (publish [this from data id]
-    (.publish this from data id))
+  (publish
+    ([this from data]
+       (publish this from data nil))
+    ([this from data id]
+       (.publish this from data id)))
   (subscribe [this session]
     (.subscribe this session))
   (unsubscribe [this session]
@@ -143,9 +150,12 @@ value
   ServerChannelProtocol
   (remove-channel [this]
     (remove-channel (get-channel this)))
-  (publish [this from data id]
-    (publish (get-channel this)
-             from data id))
+  (publish
+    ([this from data]
+       (publish this from data nil))
+    ([this from data id]
+       (publish (get-channel this)
+                from data id)))
   (subscribe [this session]
     (subscribe (get-channel this)
                session))

@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>
+      Chatter Test Page
+    </title>
+  </head>
+  <body>
+    <script type="text/javascript" src="js/cometd-namespace.js"></script>
+    <script type="text/javascript" src="js/Cometd.js"></script>
+    <script type="text/javascript" src="js/CallbackPollingTransport.js"></script>
+    <script type="text/javascript" src="js/cometd-header.js"></script>
+    <script type="text/javascript" src="js/cometd-json.js"></script>
+    <script type="text/javascript" src="js/LongPollingTransport.js"></script>
+    <script type="text/javascript" src="js/RequestTransport.js"></script>
+    <script type="text/javascript" src="js/Transport.js"></script>
+    <script type="text/javascript" src="js/TransportRegistry.js"></script>
+    <script type="text/javascript" src="js/Utils.js"></script>
+    <script type="text/javascript" src="js/WebSocketTransport.js"></script>
+    <script type="text/javascript" src="js/AckExtension.js"></script>
+    <script type="text/javascript" src="js/ReloadExtension.js"></script>
+    <script type="text/javascript" src="js/TimeStampExtension.js"></script>
+    <script type="text/javascript" src="js/TimeSyncExtension.js"></script>
+    <script type="text/javascript" src="js/jquery-1.6.2.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="js/jquery.cometd.js"></script>
+    <script type="text/javascript" src="js/jquery.cometd-ack.js"></script>
+    <script type="text/javascript" src="js/jquery.cometd-reload.js"></script>
+    <script type="text/javascript" src="js/jquery.cometd-timestamp.js"></script>
+    <script type="text/javascript" src="js/jquery.cometd-timesync.js"></script>
+  <script type="text/javascript">
+    $.cometd.init('http://localhost:9095/cometd');
+    $.cometd.addListener('/meta/connect', function(message) {
+      $.cometd.publish('/my/channel', {hello: 'Word'});
+    });
+  </script>
+  </body>
+</html>

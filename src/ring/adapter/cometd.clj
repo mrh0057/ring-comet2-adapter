@@ -1,9 +1,8 @@
 (ns ring.adapter.cometd
   (:import [org.cometd.server CometdServlet AbstractService]
            [org.cometd.bayeux.server BayeuxServer]
-           [javax.servlet GenericServlet ServletException]))
-
-(def ^BayeuxServer *bayeux-server*)
+           [javax.servlet GenericServlet ServletException])
+  (:use [ring.adapter.internal.bayeux]))
 
 (defn create-cometd-servlet
   ([] (create-cometd-servlet "/cometd/*"))
@@ -12,35 +11,22 @@
       :url-pattern url-pattern
       :load-on-startup 1}))
 
-(defn create-bayeux-initializer []
-  {:servlet (proxy [GenericServlet] []
-      (init [config]
-        (proxy-super init config)
-        (let [sc (proxy-super getServletContext)]
-          (def *bayeux-server* (.getAttribute sc BayeuxServer/ATTRIBUTE))
-          (if (nil? *bayeux-server*)
-            (throw (Exception. "No BayeuxServer available. Servlet start order correct?")))))
-      (service [request response]
-        (throw (ServletException.))))
-   :load-on-startup 2})
+(defn create-bayeux-servlet
+  "Used to create the servlet for bayeux.
 
-(defn create-service
-  "Used to create a service with the specified routing key.
-
-channel-id
-  The channel-id for the service.
-  syntax: my/channel/*"
-  [channel-id]
-)
-
-(defn send-message
-  "Publishes a message to a channel.
-
-channel-id 
-  The id of the channel to publish to.
-data
-  The data to publish on the channel. Make sure you serialize the data to json before sending the message.
-id
-  The id of the message."
-  [channel-id data id]
-  (.getChannel *bayeux-server* channel-id))
+services
+  The services for the bayeux server.
+extensions
+  The extensions for the bayeux server.
+  options:
+   :acknowledge
+     Provides the reliable ordering messaging to the bayeux protocol and it also receives any unacknowledge messages.
+   :timestamp
+     Adds a timestamp to each message object.
+   :timesync
+     Provides the time offset between the client and the server.
+      For more information: http://cometd.org/documentation/2.x/cometd-ext/timesync
+returns
+  The servlet map for bayeux"
+  [services & extensions]
+  (create-bayeux-initializer services extensions))
