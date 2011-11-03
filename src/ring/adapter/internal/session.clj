@@ -1,5 +1,5 @@
 (ns ring.adapter.internal.session
-  (:import [org.cometd.bayeux.server LocalSession]))
+  (:import [org.cometd.bayeux.server LocalSession ServerSession]))
 
 (defprotocol LocalSessionProtocol
   (server-session [this]
@@ -20,14 +20,18 @@ listener
     session
       The server session the that has been removed.
     timeout
-      The timout of the session.")
+      The timout of the session.
+returns
+  The object need to remove the listener")
   (add-dequeue-listener [this listener]
     "Listener is called when a messages are dequed from the server.  Can be used
 to removed duplicate messages.
   listener The function to call.  
     Takes 1 argument
       session
-        The server session.")
+        The server session.
+  returns
+   The object need to remove the listener.")
   (add-max-queue-listener [this listener]
     "Called when the maximium number of message is reached for a queue.
 listener
@@ -43,7 +47,10 @@ listener
    true 
     The message should be queue for the client.
    false
-    The message should not be queued.")
+    The message should not be queued.
+
+returns
+  The object needed to remove the listener.")
   (add-message-listener [this listener]
     "Called before a message is queue.
 
@@ -56,6 +63,33 @@ listener
     message
       The server message.
 
-  The listener can return false for the message not to be sent or true for the message to be sent."))
+  The listener can return false for the message not to be sent or true for the message to be sent.
+returns
+  The object need to remove the listener."))
 
-
+(extend-type ServerSession
+  ServerSessionProtocol
+  (add-remove-session-listener [this listener]
+    (let [handler (proxy [org.cometd.bayeux.server.ServerSession$RemoveListener] []
+                (removed [session timeout]
+                  (listener session timeout)))]
+      (.addListener this handler)
+      handler))
+  (add-dequeue-listener [this listener]
+    (let [handler (proxy [org.cometd.bayeux.server.ServerSession$DeQueueListener] []
+                    (deQueue [session queue]
+                      (listener session queue)))]
+      (.addListener this handler)
+      handler))
+  (add-max-queue-listener [this listener]
+    (let [handler (proxy [org.cometd.bayeux.server.ServerSession$MaxQueueListener] []
+                    (queueMaxed [session from message]
+                      (listener session from message)))]
+      (.addListener this handler)
+      handler))
+  (add-message-listener [this listener]
+    (let [handler (proxy [org.cometd.bayeux.server.ServerSession$MessageListener] []
+                    (onMessage [to from message]
+                      (listener to from message)))]
+      (.addListener this handler)
+      handler)))

@@ -11,14 +11,16 @@
                            channel-id
                            data
                            id
+                           client-id
                            message])
 
 (defn make-service-request [from
                             channel-id
                             data
                             id
+                            client-id
                             message]
-  (ServiceRequest. from channel-id data id message))
+  (ServiceRequest. from channel-id data id client-id message))
 
 (defn- same-session? [service from]
   (= (server-session (:session service)) from))
@@ -32,6 +34,7 @@
                                                           (id channel)
                                                           (.getDataAsMap message)
                                                           (.getId message)
+                                                          (.getClientId message)
                                                           message)))))
       true)))
 

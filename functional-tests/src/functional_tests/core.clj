@@ -6,7 +6,8 @@
         ring.middleware.params
         ring.adapter.cometd
         ring.adapter.service
-        ring.adapter.jetty7))
+        ring.adapter.jetty7
+        ring.adapter.client))
 
 (defroutes all-routes
   (files "/" {:root "public"}))
@@ -17,6 +18,9 @@
 (defn test-service [val]
   (println val)
   (publish "/publish/test" {:hello "world"})
+  (client-removed-listener (:from val)
+                           (fn [session timeout]
+                             (println session)))
   (println "returning"))
 
 (defservices all-services
