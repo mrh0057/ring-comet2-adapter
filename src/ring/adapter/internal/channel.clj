@@ -1,5 +1,4 @@
-(ns
-    #^{:doc "These function are internal and are subject to change.
+(ns #^{:doc "These function are internal and are subject to change.
 The interface are kept internal to allow them to be change.  The functionality
 provided by the protocols are going to be wrap inside of function."}
   ring.adapter.internal.channel
@@ -12,9 +11,9 @@ provided by the protocols are going to be wrap inside of function."}
 it creates the channel.  The reason the bayeux-server is referenced global is because there
 can only be one.
 
-id
-  The id of the channel to get.
-return The channel with the specified id."
+*id*
+  The id of the channel to get. <br />
+*return* The channel with the specified id."
   [^String id]
   (.createIfAbsent *bayeux-server* id (into-array org.cometd.bayeux.server.ConfigurableServerChannel$Initializer []))
   (.getChannel *bayeux-server* id))
@@ -26,10 +25,10 @@ return The channel with the specified id."
     "Publishes a message on the channel.
 
 from
-  The session the message is from.  This may be nil
+  The session the message is from.  This may be nil <br />
 data
-  The data for the message
-id 
+  The data for the message <br />
+id
   The id of the message.")
   (subscribe [this session]
     "Subscribes to a session.

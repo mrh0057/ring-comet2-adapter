@@ -53,21 +53,19 @@
 
 Servlet code taken from Maximilian Weber. 
 
-  Options:
-    :configurator   - A function called with the Server instance.
-    :port
-    :host
-    :join?          - Block the caller: defaults to true.
-    :ssl?           - Use SSL.
-    :ssl-port       - SSL port: defaults to 443, implies :ssl?
-    :keystore
-    :key-password
-    :truststore
-    :trust-password
-    :servlets       - Additional servlets to register in the form
-                      [{:url-pattern \"/orders/*\"
-                        :servlet orders-servlet
-                        :load-on-startup 1}]"
+###  Options
+ `:configurator`   - A function called with the Server instance. <br />
+ `:port` <br />
+ `:host`
+ `:join?`          - Block the caller: defaults to true. <br />
+ `:ssl?`           - Use SSL. <br />
+ `:ssl-port`       - SSL port: defaults to 443, implies :ssl? <br />
+ `:keystore` <br />
+ `:key-password` <br />
+ `:truststore` <br />
+ `:trust-password` <br />
+ `:servlets`       - Additional servlets to register in the form
+ `[{:url-pattern \"/orders/*\" :servlet orders-servlet :load-on-startup 1}]`"
   [handler options]
   (let [^Server s (create-server (dissoc options :configurator))]
     (when-let [configurator (:configurator options)]

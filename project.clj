@@ -6,4 +6,5 @@
                  [org.eclipse.jetty/jetty-servlet "7.4.4.v20110707"]]
   :dev-dependencies [[clj-http "0.1.3"]
                      [swank-clojure "1.4.0-SNAPSHOT"]
-                     [lein-clojars "0.7.0"]])
+                     [lein-clojars "0.7.0"]
+                     [lein-marginalia "0.6.0"]])

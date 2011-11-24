@@ -49,11 +49,11 @@ messages sent from the channel are not also received by the channel.
 
 Adds an message listener to bayeux server.
 
-name
-  The name of the service
-channel-id
-  The id of the channel to bind the message handler to
-message-handler
+*name*
+  The name of the service <br />
+*channel-id*
+  The id of the channel to bind the message handler to <br />
+*message-handler*
   The message handler."
   [name channel-id message-handler]
   (add-listener channel-id (create-message-listener message-handler

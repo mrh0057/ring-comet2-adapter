@@ -14,19 +14,20 @@
 (defn create-bayeux-servlet
   "Used to create the servlet for bayeux.
 
-services
-  The services for the bayeux server.
-extensions
+*services*
+  The services for the bayeux server. <br />
+*extensions*
   The extensions for the bayeux server.
-  options:
-   :acknowledge
-     Provides the reliable ordering messaging to the bayeux protocol and it also receives any unacknowledge messages.
-   :timestamp
-     Adds a timestamp to each message object.
-   :timesync
+  ### options
+
+   `:acknowledge`
+     Provides the reliable ordering messaging to the bayeux protocol and it also receives any unacknowledge messages. <br />
+   `:timestamp`
+     Adds a timestamp to each message object. <br />
+   `:timesync`
      Provides the time offset between the client and the server.
-      For more information: http://cometd.org/documentation/2.x/cometd-ext/timesync
-returns
+      For more information: [docs](http://cometd.org/documentation/2.x/cometd-ext/timesync) <br />
+*returns*
   The servlet map for bayeux"
   [services & extensions]
   (create-bayeux-initializer services extensions))
