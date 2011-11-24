@@ -54,6 +54,7 @@
 Servlet code taken from Maximilian Weber. 
 
 ###  Options
+
  `:configurator`   - A function called with the Server instance. <br />
  `:port` <br />
  `:host`
