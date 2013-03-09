@@ -17,3 +17,6 @@ models/*
 *ipr
 *iws
 docs
+.lein-*
+
+target

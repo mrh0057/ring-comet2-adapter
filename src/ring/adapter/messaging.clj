@@ -17,3 +17,13 @@
      (channel/publish channel-id nil data))
   ([channel-id data from]
      (channel/publish channel-id from data)))
+
+(defn channel-exists?
+  "Used to see if a channel exists.
+
+*channel-id*
+  The id of the channel to see if its exists. <br />
+*returns*
+  true if the channel exists."
+  [channel-id]
+  (channel/channel-exists? channel-id))

@@ -18,6 +18,18 @@ can only be one.
   (.createIfAbsent *bayeux-server* id (into-array org.cometd.bayeux.server.ConfigurableServerChannel$Initializer []))
   (.getChannel *bayeux-server* id))
 
+(defn channel-exists?
+  "Checks to see if a channel exists.
+
+*id*
+  The id of the channel to see if it exists. <br />
+*return*
+  true if the chanel exists."
+  [^String id]
+  (if (.getChannel *bayeux-server* id)
+    true
+    false))
+
 (defprotocol ServerChannelProtocol
   (remove-channel [this]
     "Removes a channel and all of its children")

@@ -9,6 +9,13 @@
            (javax.servlet GenericServlet ServletException))
   (:require [ring.util.servlet :as servlet]))
 
+;; Set the jetty server globally so it can be shutdown.
+;; ===================================================
+;;
+;; The server needs to be started in another thread.
+
+(def jetty-server)
+
 (defn- proxy-handler
   "Returns an Jetty Handler implementation for the given Ring handler."
   [handler]
@@ -69,6 +76,7 @@ Servlet code taken from Maximilian Weber.
  `[{:url-pattern \"/orders/*\" :servlet orders-servlet :load-on-startup 1}]`"
   [handler options]
   (let [^Server s (create-server (dissoc options :configurator))]
+    (def jetty-server s)
     (when-let [configurator (:configurator options)]
       (configurator s))
     (let [context (ServletContextHandler. ServletContextHandler/SESSIONS)

@@ -20,8 +20,9 @@
   (publish "/publish/test" {:hello "world"})
   (client-removed-listener (:from val)
                            (fn [session timeout]
-                             (println session)))
-  (println "returning"))
+                             (println session))))
+
+(publish "/publish/test" {:hello "world"})
 
 (defservices all-services
   ("hello" "/my/channel" test-service))
